@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public abstract class Account {
   public static final String CHECKING_TYPE = "CHECKING";
   public static final String SAVINGS_TYPE = "SAVINGS";
-  
+  public int Bien_Cua_Toi_Sai_Ten = 100; // Cố tình viết sai chuẩn camelCase và có dấu gạch dưới
   private static final Logger logger = LoggerFactory.getLogger(Account.class);
 
   private long accountNumber;
