@@ -1,25 +1,38 @@
 name: BankSystem CI Automation
+
 on:
   push:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # 1. Định nghĩa Ma trận Hệ điều hành
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    # 2. Sử dụng biến matrix cho môi trường chạy
+    runs-on: ${{ matrix.os }}
+
     steps:
     - name: Checkout Source Code
       uses: actions/checkout@v4
+
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
     - name: Build and Test with Maven
       run: mvn -B clean test package
+
     - name: Upload JAR Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: banksystem-executable-jar
+        # Thêm tên HĐH vào tên file artifact để không bị đè lên nhau
+        name: banksystem-executable-jar-${{ matrix.os }} 
         path: target/*.jar
