@@ -1,18 +1,24 @@
-package test.java.com.bank_system;
+package com.bank_system;
 
 import org.junit.jupiter.api.Test;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FilePathTest {
 
   @Test
   public void testLogFilePath() {
-    // Java tự động tạo đường dẫn tùy thuộc vào hệ điều hành đang chạy
-    File logFile = new File("logs", "transaction.log");
+    // Cách chuẩn hóa: Sử dụng File.separator (Nó sẽ tự thành "\" ở Win và "/" ở Linux/Mac)
+    String expectedPath = "logs" + File.separator + "transaction.log";
     
-    // Cố tình so sánh với đường dẫn "cứng" kiểu Windows (\)
-    // Sẽ báo lỗi: expected: <logs\transaction.log> but was: <logs/transaction.log> trên Linux/Mac
-    assertEquals("logs\\transaction.log", logFile.getPath()); 
+    // Test 1: File API cũ
+    File logFile = new File("logs", "transaction.log");
+    assertEquals(expectedPath, logFile.getPath());
+
+    // Test 2: Sử dụng java.nio.file.Path (API hiện đại, khuyên dùng)
+    Path nioPath = Paths.get("logs", "transaction.log");
+    assertEquals(expectedPath, nioPath.toString());
   }
 }
