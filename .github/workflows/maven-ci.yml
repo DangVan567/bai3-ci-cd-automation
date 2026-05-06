@@ -24,7 +24,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        
+        cache: maven 
 
     # Đổi 'package' thành 'verify' để kích hoạt jacoco:check
     - name: Build and Verify with Maven
