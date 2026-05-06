@@ -5,7 +5,10 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-
+# BẮT BUỘC: Cấp quyền cho Bot được phép viết bình luận vào Pull Request
+permissions:
+  contents: read
+  pull-requests: write
 jobs:
   build:
     strategy:
@@ -45,3 +48,13 @@ jobs:
       with:
         name: jacoco-report-${{ matrix.os }}
         path: target/site/jacoco/
+
+
+  # THÊM BƯỚC NÀY: Gọi Bot tự động review code
+    - name: Automated Code Review (Checkstyle)
+      uses: dbelyaev/action-checkstyle@master
+      # if: always() đảm bảo Bot vẫn chạy để báo lỗi kể cả khi bước Maven bên trên bị Fail
+      if: always() && github.event_name == 'pull_request'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        reporter: github-pr-review
