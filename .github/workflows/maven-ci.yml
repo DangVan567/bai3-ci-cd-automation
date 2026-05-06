@@ -8,12 +8,11 @@ on:
 
 jobs:
   build:
-    # 1. Định nghĩa Ma trận Hệ điều hành
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
-    # 2. Sử dụng biến matrix cho môi trường chạy
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -27,12 +26,22 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build and Test with Maven
-      run: mvn -B clean test package
+    # Đổi 'package' thành 'verify' để kích hoạt jacoco:check
+    - name: Build and Verify with Maven
+      run: mvn -B clean verify
 
     - name: Upload JAR Artifact
       uses: actions/upload-artifact@v4
+      # Thêm điều kiện always() để artifact vẫn được upload kể cả khi build bị fail do coverage thấp
+      if: always() 
       with:
-        # Thêm tên HĐH vào tên file artifact để không bị đè lên nhau
-        name: banksystem-executable-jar-${{ matrix.os }} 
-        path: target/*.jar
+        name: banksystem-executable-jar-${{ matrix.os }}
+        path: target/*.jar 
+
+    # Thêm step lưu trữ báo cáo JaCoCo
+    - name: Upload JaCoCo Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: jacoco-report-${{ matrix.os }}
+        path: target/site/jacoco/
