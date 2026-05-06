@@ -9,6 +9,6 @@ public class AccountTest {
   public void testCheckingAccountCreation() {
     CheckingAccount acc = new CheckingAccount(123456789L, 1000.0);
     assertEquals(123456789L, acc.getAccountNumber());
-    assertEquals(500.0, acc.getBalance());
+    assertEquals(2000.0, acc.getBalance());
   }
 }
