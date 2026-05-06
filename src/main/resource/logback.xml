@@ -1,0 +1,17 @@
+<configuration>
+    <!-- Cấu hình in log ra màn hình Console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Định dạng log: Thời gian | Mức độ | Tên Class | Nội dung -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Đặt cấp độ log mặc định cho toàn bộ dự án -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <!-- Cấu hình level log riêng cho package -->
+    <logger name="com.bank_system" level="DEBUG" />
+</configuration>
